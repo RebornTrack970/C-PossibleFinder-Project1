@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     printf("Would you like to use a file or enter your own expression?\n");
