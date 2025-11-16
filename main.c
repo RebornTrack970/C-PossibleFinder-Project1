@@ -31,6 +31,7 @@ int doCalc(int num1, int num2, char op) {
         case '/':
             if (num2 == 0) return 2100000000; //no div by 0
             if (num1 % num2 != 0) return 2100000000; //all substeps as integer
+            // ^ "Assuming the results of all subsequent operations turn out integers", said in the instruction pdf.
             return num1 / num2;
         case '^':
             return (int)pow(num1, num2);
@@ -87,7 +88,7 @@ struct Node* reverse(struct Node* head) {
     return prev;
 }
 
-struct Node* simplfy(struct Node* head) {
+struct Node* simplfy(struct Node* head) { //and solve!
     while (1) {
         int pass = 0;
         struct Node* cur = head;
@@ -114,16 +115,6 @@ struct Node* simplfy(struct Node* head) {
     return head;
 }
 
-int countLetters(struct Node* head) {
-    struct Node* cur = head;
-    int c = 0;
-    while (cur != NULL) {
-        c += cur->type == UNKNOWN ? 1 : 0;
-        cur = cur->next;
-    }
-    return c;
-}
-
 void solve(struct Node* head, int tResult, char letters[], int letC, int prevChoices[], int prevData[], int k) {
     if (k == letC) {
         struct Node* f = simplfy(reverse(copy(head)));
@@ -146,7 +137,6 @@ void solve(struct Node* head, int tResult, char letters[], int letC, int prevCho
             cur = cur->next;
         }
         int oData = cur->data;
-        int oType = cur->type;
         //try ops
         cur->type = OPERATOR;
         cur->data = '+';
@@ -184,14 +174,13 @@ void solve(struct Node* head, int tResult, char letters[], int letC, int prevCho
 }
 
 int main(void) {
-    printf("Would you like to use a file or enter your own expression?\n");
-    printf("1: Enter in console\n2: File\n");
+    printf("Would you like to use a file or enter your own expression?\n1: Enter in console\n2: File\n");
 
     int num;
     scanf(" %d",&num);
     int c; while ((c = getchar()) != '\n' && c != EOF) { } //Clear input
 
-    char arr[100];
+    char arr[100]; //fixed size
     if (num==1) {
         printf("Enter your Expression: \n");
         fgets(arr, sizeof(arr), stdin);
@@ -258,9 +247,8 @@ int main(void) {
     int prevChoices[10];
     int prevData[10];
 
+    //give the answer
     solve(list, result, letters, letC, prevData, prevChoices,0);
-
-
 
     return 0;
 
