@@ -124,7 +124,7 @@ int countLetters(struct Node* head) {
 
 void solve(struct Node* head, int tResult, char letters[], int letC, int prevChoices[], int prevData[], int k) {
     if (k == letC) {
-        struct Node* f = simplfy(copy(head));
+        struct Node* f = simplfy(reverse(copy(head)));
         if (f != NULL && f->next == NULL && f->data == tResult) {
             printf("(");
             int i = 0;
@@ -177,7 +177,7 @@ void solve(struct Node* head, int tResult, char letters[], int letC, int prevCho
             solve(head, tResult,letters,letC,prevChoices,prevData,k+1);
         }
         cur->data = oData;
-        cur->type = oType;
+        cur->type = UNKNOWN;
     }
 }
 
