@@ -11,12 +11,12 @@ void insert(struct Node** head, int data) {
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     newNode->data = data;
     newNode->next = (*head);
-    if (*head == NULL) {}
+    *head = newNode;
 }
 void read(struct Node** head) {
     struct Node* temp = *head;
-    printf("%c", temp->data);
     if (temp->next != NULL) {read(&temp->next);}
+    printf("%c", temp->data);
 }
 
 int main(void) {
@@ -40,15 +40,15 @@ int main(void) {
         printf("Unknown Choice Specified. Exiting Program.");
         exit(0);
     }
-    //Finish Reading and Parse.
-
-    struct Node *list;
+    //Finish Reading and Parse into Linked List.
+    struct Node *list = NULL;
     int i=0;
     for (; i<strlen(arr) && arr[i] != '\n' && arr[i] != EOF; i++) {
         if (arr[i]==' ') continue;
         insert(&list,arr[i]);
     }
-    read(&list);
+    //read(&list);
+    
 
     return 0;
 
