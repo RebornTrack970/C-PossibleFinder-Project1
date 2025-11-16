@@ -144,27 +144,40 @@ void solve(struct Node* head, int tResult, char letters[], int letC, int prevCho
             cur = cur->next;
         }
         int oData = cur->data;
+        int oType = cur->type;
         //try ops
         cur->type = OPERATOR;
         cur->data = '+';
-        solve(head, tResult,prevChoices,prevData);
+        prevData[k] = cur->data;
+        prevChoices[k] = cur->type;
+        solve(head, tResult,letters,letC,prevChoices,prevData,k+1);
         cur->data = '-';
-        solve(head, tResult,prevChoices,prevData);
+        prevData[k] = cur->data;
+        prevChoices[k] = cur->type;
+        solve(head, tResult,letters,letC,prevChoices,prevData,k+1);
         cur->data = '*';
-        solve(head, tResult,prevChoices,prevData);
+        prevData[k] = cur->data;
+        prevChoices[k] = cur->type;
+        solve(head, tResult,letters,letC,prevChoices,prevData,k+1);
         cur->data = '/';
-        solve(head, tResult,prevChoices,prevData);
+        prevData[k] = cur->data;
+        prevChoices[k] = cur->type;
+        solve(head, tResult,letters,letC,prevChoices,prevData,k+1);
         cur->data = '^';
-        solve(head, tResult,prevChoices,prevData);
+        prevData[k] = cur->data;
+        prevChoices[k] = cur->type;
+        solve(head, tResult,letters,letC,prevChoices,prevData,k+1);
         //try numbers
         cur->type = OPERAND;
         int i = 1;
         for (; i < 100; i++) {
             cur->data = i;
-            solve(head, tResult,prevChoices,prevData);
+            prevData[k] = cur->data;
+            prevChoices[k] = cur->type;
+            solve(head, tResult,letters,letC,prevChoices,prevData,k+1);
         }
         cur->data = oData;
-        cur->type = UNKNOWN;
+        cur->type = oType;
     }
 }
 
