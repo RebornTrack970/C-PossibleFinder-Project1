@@ -3,8 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+enum TYPE {OPERAND,OPERATOR,UNKNOWN};
+
 struct Node {
     int data;
+    int type;
     struct Node* next;
 
 };
@@ -35,16 +38,20 @@ int doCalc(int num1, int num2, char op) {
     }
 }
 
-void insert(struct Node** head, int data) {
+void insert(struct Node** head, int data, int type) {
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     newNode->data = data;
+    newNode->type = type;
     newNode->next = (*head);
     *head = newNode;
 }
 void read(struct Node** head) {
     struct Node* temp = *head;
     if (temp->next != NULL) {read(&temp->next);}
-    printf("%c", temp->data);
+    if (temp->type == OPERAND) printf("%d ", temp->data);
+    else printf("%c ", (char)temp->data);
+
+
 }
 
 int main(void) {
@@ -74,14 +81,23 @@ int main(void) {
     int i=0;
     for (; i<strlen(arr) && arr[i] != '\n' && arr[i] != EOF && arr[i] != '='; i++) {
         if (arr[i]==' ') continue;
-        insert(&list,arr[i]);
+        if (!isDigit(arr[i])) {
+            insert(&list,arr[i],isOperator(arr[i]) ? OPERATOR : UNKNOWN);
+            continue;
+        }
+        int num = 0;
+        while (isDigit(arr[i])) {
+            num = num * 10 + (arr[i] - '0');
+            i++;
+        }
+        insert(&list,num,OPERAND);
     }
     if (arr[i]=='=') result = arr[i+2] - '0'; // if it isnt equal to 0.
-    //read(&list);
+    read(&list);
 
     //Try Doing all Operations that we can.
     struct Node head = *list;
-    while (head.next.next != NULL) {
+    while (head.next->next != NULL) {
         if (isDigit(head.data) && isDigit(head.next->data) && isOperator(head.next->next->data)) {
 
         }
