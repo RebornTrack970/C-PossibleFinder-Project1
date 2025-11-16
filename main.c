@@ -107,6 +107,7 @@ int main(void) {
             free(temp1);
             free(temp2);
         }
+        head = head->next;
     }
     read(&list);
 
