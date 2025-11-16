@@ -52,6 +52,26 @@ void read(struct Node** head) {
     else printf("%c ", (char)temp->data);
 }
 
+// Helper funcs
+struct Node* copy(struct Node* head) {
+    if (head == NULL) return NULL;
+    struct Node* n = (struct Node*)malloc(sizeof(struct Node));
+    n->data = head->data;
+    n->type = head->type;
+    n->next = copy(head->next);
+    return n;
+}
+
+void freeL(struct Node* head) {
+    struct Node* cur = head;
+    struct Node* n;
+    while (cur != NULL) {
+        n = cur->next;
+        free(cur);
+        cur = n;
+    }
+}
+
 struct Node* reverse(struct Node* head) {
     struct Node *prev = NULL;
     struct Node *next_node = NULL;
@@ -102,13 +122,14 @@ int countLetters(struct Node* head) {
     return c;
 }
 
-int solve(struct Node* head,int tResult) {
+void solve(struct Node* head,int tResult, int *prevChoices, int *prevData) {
     if (countLetters(head)==0){
-        struct Node* f = simplfy(head);
+        struct Node* list_copy = copy(head);
+        struct Node* f = simplfy(list_copy);
         if (f != NULL && f->next == NULL && f->data == tResult) {
-            printf("found");
-
+            printf("found!");
         }
+        freeL(f);
     }
     else {
         struct Node* cur = head;
@@ -162,9 +183,23 @@ int main(void) {
     //Finish Reading and Parse into Linked List.
     int result = 0;
     struct Node *list = NULL;
+    char letters[10];
+    int letC = 0;
     int i=0;
     for (; i<strlen(arr) && arr[i] != '\n' && arr[i] != EOF && arr[i] != '='; i++) {
         if (arr[i]==' ') continue;
+        //count letter
+        if (!isDigit(arr[i]) && !isOperator(arr[i])) {
+            int found = 0;
+            int j = 0;
+            for (; j < letC; j++) {
+                if (letters[j] == arr[i]) found = 1;
+            }
+            if (!found) {
+                letters[letC++] = arr[i];
+            }
+        }
+        //insert all
         if (!isDigit(arr[i])) {
             insert(&list,arr[i],isOperator(arr[i]) ? OPERATOR : UNKNOWN);
             continue;
@@ -191,7 +226,15 @@ int main(void) {
     read(&list); printf("= %d\n",result);
 
     //Do actual Testing for the letters
-    solve(list,result);
+    printf("\nPossible value combinations for (");
+    int j = 0;
+    for (; j < letC; j++) printf("%c%s", letters[j], j == letC - 1 ? "" : ", ");
+    printf("):\n");
+
+    int prevChoices[10];
+    int prevData[10];
+
+    solve(list, result,prevChoices,prevData);
 
 
 
