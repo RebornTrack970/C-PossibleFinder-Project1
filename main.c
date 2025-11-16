@@ -6,13 +6,15 @@ int main(void) {
     printf("1: file\n2: enter in console\n");
     int num;
     scanf("%d",&num);
-    char arr[30];
+    char arr[100];
     if (num==1) {
         fgets(arr, sizeof(arr), stdin);
     }else if (num==2) {
-
+        FILE *file;
+        file = fopen("expression.txt", "r");
+        fgets(arr, 100, file);
     }else {
-        printf("Unknown Choice Spesified. Exiting Program.");
+        printf("Unknown Choice Specified. Exiting Program.");
         exit(0);
     }
     return 0;
