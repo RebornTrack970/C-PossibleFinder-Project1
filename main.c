@@ -92,6 +92,42 @@ struct Node* simplfy(struct Node* head) {
     return head;
 }
 
+int countLetters(struct Node* head) {
+    struct Node* cur = head;
+    int c = 0;
+    while (cur != NULL) {
+        c += cur->type == UNKNOWN ? 1 : 0;
+        cur = cur->next;
+    }
+    return c;
+}
+
+int solve(struct Node* head) {
+    if (countLetters(head)==0) read(simplfy(head));
+    else {
+        struct Node* cur = head;
+        while (cur != NULL && cur->type != UNKNOWN) cur = cur->next;
+        //try ops
+        cur->type = OPERATOR;
+        cur->data = '+';
+        solve(head);
+        cur->data = '-';
+        solve(head);
+        cur->data = '*';
+        solve(head);
+        cur->data = '/';
+        solve(head);
+        cur->data = '^';
+        solve(head);
+        //try numbers
+        cur->type = OPERAND;
+        for (int i = 1; i < 100; i++) {
+            cur->data = i;
+            solve(head);
+        }
+    }
+}
+
 int main(void) {
     printf("Would you like to use a file or enter your own expression?\n");
     printf("1: Enter in console\n2: File\n");
@@ -144,6 +180,8 @@ int main(void) {
     printf("Expression in Simple Form is:\n");
     read(&list); printf("= %d\n",result);
 
+    //Do actual Testing for the letters
+    solve(list);
 
 
 
