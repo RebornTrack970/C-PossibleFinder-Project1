@@ -65,6 +65,33 @@ struct Node* reverse(struct Node* head) {
     return prev;
 }
 
+int testAnswer(struct Node* list, char letters[], char tryops[], int letterC) {
+    struct Node *Stack = NULL;
+    struct Node *cur = list;
+    while (cur != NULL) {
+        if (cur->type == OPERAND) {
+            insert(&Stack, cur->data, OPERAND); //add to stack if number (learned from the ppt for trees XD)
+        }else if (cur->type == OPERATOR) {
+            //pop 2
+            int num2 = Stack->data;
+            struct Node* t1 = Stack;
+            Stack = Stack->next;
+            free(t1);
+            //pop 1
+            int num1 = Stack->data;
+            struct Node* t2 = Stack;
+            Stack = Stack->next;
+            free(t2);
+            //Now do magic calc
+            insert(&Stack, doCalc(num1, num2, (char)cur->data), OPERAND);
+        }else { //For unknown, uh, idk for now.
+
+        }
+        cur = cur->next; //move
+    }
+    return Stack->data;
+}
+
 int main(void) {
     printf("Would you like to use a file or enter your own expression?\n");
     printf("1: Enter in console\n2: File\n");
@@ -109,29 +136,7 @@ int main(void) {
 
     list = reverse(list); // Had to reverse... it didnt work otherwise...
     //Try Doing all Operations that we can.
-    struct Node *Stack = NULL;
-    struct Node *cur = list;
-    while (cur != NULL) {
-        if (cur->type == OPERAND) {
-            insert(&Stack, cur->data, OPERAND); //add to stack if number (learned from the ppt for trees XD)
-        }else if (cur->type == OPERATOR) {
-            //pop 2
-            int num2 = Stack->data;
-            struct Node* t1 = Stack;
-            Stack = Stack->next;
-            free(t1);
-            //pop 1
-            int num1 = Stack->data;
-            struct Node* t2 = Stack;
-            Stack = Stack->next;
-            free(t2);
-            //Now do magic calc
-            insert(&Stack, doCalc(num1, num2, (char)cur->data), OPERAND);
-        }else { //For unknown, uh, idk for now.
 
-        }
-        cur = cur->next; //move
-    }
 
     printf("%d",Stack->data);
 
