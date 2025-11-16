@@ -1,15 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main(void) {
     printf("Would you like to use a file or enter your own expression?\n");
-    printf("1: file\n2: enter in console\n");
+    printf("1: Enter in console\n2: File\n");
+
     int num;
-    scanf("%d",&num);
+    scanf(" %d",&num);
+    int c; while ((c = getchar()) != '\n' && c != EOF) { } //Clear input
+
     char arr[100];
     if (num==1) {
+        printf("Enter your Expression: \n");
         fgets(arr, sizeof(arr), stdin);
+        printf("Your expression is, %s", arr);
     }else if (num==2) {
+        printf("Reading Expression from File.");
         FILE *file;
         file = fopen("expression.txt", "r");
         fgets(arr, 100, file);
