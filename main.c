@@ -29,7 +29,8 @@ int doCalc(int num1, int num2, char op) {
         case '*':
             return num1 * num2;
         case '/':
-            if (num2 == 0) return 2100000000;
+            if (num2 == 0) return 2100000000; //no div by 0
+            if (num1 % num2 != 0) return 2100000000; //all substeps as integer
             return num1 / num2;
         case '^':
             return (int)pow(num1, num2);
@@ -170,7 +171,7 @@ void solve(struct Node* head, int tResult, char letters[], int letC, int prevCho
         solve(head, tResult,letters,letC,prevChoices,prevData,k+1);
         //try numbers
         cur->type = OPERAND;
-        int i = -100;
+        int i = 0;
         for (; i < 100; i++) {
             cur->data = i;
             prevData[k] = cur->data;
