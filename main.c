@@ -97,18 +97,7 @@ int main(void) {
     read(&list);
 
     //Try Doing all Operations that we can.
-    struct Node *head = list;
-    while (head->next->next != NULL) {
-        if (head->type == OPERAND && head->next->type == OPERAND && head->next->next->type == OPERATOR) {
-            head->data = doCalc(head->data, head->next->data, (char)head->next->next->data);
-            struct Node* temp1 = head->next;
-            struct Node* temp2 = head->next->next;
-            head->next = head->next->next->next;
-            free(temp1);
-            free(temp2);
-        }
-        head = head->next;
-    }
+
     read(&list);
 
 
