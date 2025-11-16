@@ -115,13 +115,25 @@ int main(void) {
         if (cur->type == OPERAND) {
             insert(&Stack, cur->data, OPERAND); //add to stack if number (learned from the ppt for trees XD)
         }else if (cur->type == OPERATOR) {
-
+            //pop 2
+            int num2 = Stack->data;
+            struct Node* t1 = Stack;
+            Stack = Stack->next;
+            free(t1);
+            //pop 1
+            int num1 = Stack->data;
+            struct Node* t2 = Stack;
+            Stack = Stack->next;
+            free(t2);
+            //Now do magic calc
+            insert(&Stack, doCalc(num1, num2, (char)cur->data), OPERAND);
         }else { //For unknown, uh, idk for now.
 
         }
+        cur = cur->next; //move
     }
 
-    read(&list);
+    printf("%d",Stack->data);
 
 
     return 0;
