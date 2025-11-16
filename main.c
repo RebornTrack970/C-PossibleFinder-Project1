@@ -135,11 +135,14 @@ int main(void) {
     //read(&list);
 
     list = reverse(list); // Had to reverse... it didnt work otherwise...
+
     //Try Doing all Operations that we can.
     struct Node *Stack = NULL;
     struct Node *cur = list;
-    list = simplfy(list); //simplfy func
-    read(&list);
+    list = reverse(simplfy(list)); //simplfy func
+
+    printf("Expression in Simple Form is:\n");
+    read(&list); printf("= %d\n",result);
 
 
 
