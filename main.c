@@ -102,29 +102,39 @@ int countLetters(struct Node* head) {
     return c;
 }
 
-int solve(struct Node* head) {
-    if (countLetters(head)==0) read(simplfy(head));
+int solve(struct Node* head,int tResult) {
+    if (countLetters(head)==0){
+        struct Node* f = simplfy(head);
+        if (f != NULL && f->next == NULL && f->data == tResult) {
+            printf("found");
+
+        }
+    }
     else {
         struct Node* cur = head;
         while (cur != NULL && cur->type != UNKNOWN) cur = cur->next;
+        int oData = cur->data;
         //try ops
         cur->type = OPERATOR;
         cur->data = '+';
-        solve(head);
+        solve(head,tResult);
         cur->data = '-';
-        solve(head);
+        solve(head,tResult);
         cur->data = '*';
-        solve(head);
+        solve(head,tResult);
         cur->data = '/';
-        solve(head);
+        solve(head,tResult);
         cur->data = '^';
-        solve(head);
+        solve(head,tResult);
         //try numbers
         cur->type = OPERAND;
-        for (int i = 1; i < 100; i++) {
+        int i = 1;
+        for (; i < 100; i++) {
             cur->data = i;
-            solve(head);
+            solve(head,tResult);
         }
+        cur->data = oData;
+        cur->type = UNKNOWN;
     }
 }
 
@@ -181,7 +191,7 @@ int main(void) {
     read(&list); printf("= %d\n",result);
 
     //Do actual Testing for the letters
-    solve(list);
+    solve(list,result);
 
 
 
