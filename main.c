@@ -122,37 +122,46 @@ int countLetters(struct Node* head) {
     return c;
 }
 
-void solve(struct Node* head,int tResult, int *prevChoices, int *prevData) {
-    if (countLetters(head)==0){
-        struct Node* list_copy = copy(head);
-        struct Node* f = simplfy(list_copy);
+void solve(struct Node* head, int tResult, char letters[], int letC, int prevChoices[], int prevData[], int k) {
+    if (k == letC) {
+        struct Node* f = simplfy(copy(head));
         if (f != NULL && f->next == NULL && f->data == tResult) {
-            printf("found!");
+            printf("(");
+            int i = 0;
+            for (; i < letC; i++) {
+                if (prevChoices[i] == OPERATOR) printf("%c", (char)prevData[i]);
+                else printf("%d", prevData[i]);
+                if (i < letC - 1) printf(", ");
+            }
+            printf(")\n");
         }
         freeL(f);
     }
     else {
         struct Node* cur = head;
-        while (cur != NULL && cur->type != UNKNOWN) cur = cur->next;
+        while (cur != NULL) {
+            if (cur->type == UNKNOWN && cur->data == letters[k]) break;
+            cur = cur->next;
+        }
         int oData = cur->data;
         //try ops
         cur->type = OPERATOR;
         cur->data = '+';
-        solve(head,tResult);
+        solve(head, tResult,prevChoices,prevData);
         cur->data = '-';
-        solve(head,tResult);
+        solve(head, tResult,prevChoices,prevData);
         cur->data = '*';
-        solve(head,tResult);
+        solve(head, tResult,prevChoices,prevData);
         cur->data = '/';
-        solve(head,tResult);
+        solve(head, tResult,prevChoices,prevData);
         cur->data = '^';
-        solve(head,tResult);
+        solve(head, tResult,prevChoices,prevData);
         //try numbers
         cur->type = OPERAND;
         int i = 1;
         for (; i < 100; i++) {
             cur->data = i;
-            solve(head,tResult);
+            solve(head, tResult,prevChoices,prevData);
         }
         cur->data = oData;
         cur->type = UNKNOWN;
@@ -234,7 +243,7 @@ int main(void) {
     int prevChoices[10];
     int prevData[10];
 
-    solve(list, result,prevChoices,prevData);
+    solve(list, result, letters, letC, prevData, prevChoices,0);
 
 
 
