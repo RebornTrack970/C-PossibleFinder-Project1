@@ -50,8 +50,19 @@ void read(struct Node** head) {
     if (temp->next != NULL) {read(&temp->next);}
     if (temp->type == OPERAND) printf("%d ", temp->data);
     else printf("%c ", (char)temp->data);
+}
 
-
+struct Node* reverse(struct Node* head) {
+    struct Node *prev = NULL;
+    struct Node *next_node = NULL;
+    struct Node *cur = head;
+    while (cur != NULL) {
+        next_node = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = next_node;
+    }
+    return prev;
 }
 
 int main(void) {
@@ -94,9 +105,21 @@ int main(void) {
         insert(&list,num,OPERAND);
     }
     if (arr[i]=='=') result = arr[i+2] - '0'; // if it isnt equal to 0.
-    read(&list);
+    //read(&list);
 
+    list = reverse(list); // Had to reverse... it didnt work otherwise...
     //Try Doing all Operations that we can.
+    struct Node *Stack = NULL;
+    struct Node *cur = list;
+    while (cur != NULL) {
+        if (cur->type == OPERAND) {
+            insert(&Stack, cur->data, OPERAND); //add to stack if number (learned from the ppt for trees XD)
+        }else if (cur->type == OPERATOR) {
+
+        }else { //For unknown, uh, idk for now.
+
+        }
+    }
 
     read(&list);
 
