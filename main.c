@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+struct Node {
+    int data;
+    struct Node* next;
+    struct Node* prev;
+};
+
 int main(void) {
     printf("Would you like to use a file or enter your own expression?\n");
     printf("1: Enter in console\n2: File\n");
@@ -14,7 +20,6 @@ int main(void) {
     if (num==1) {
         printf("Enter your Expression: \n");
         fgets(arr, sizeof(arr), stdin);
-        printf("Your expression is, %s", arr);
     }else if (num==2) {
         printf("Reading Expression from File.");
         FILE *file;
@@ -23,6 +28,14 @@ int main(void) {
     }else {
         printf("Unknown Choice Specified. Exiting Program.");
         exit(0);
+    }
+    //Finish Reading and Parse.
+
+    Node *mainPtr;
+    int i=0;
+    for (; i<strlen(arr) && arr[i] != '\n' && arr[i] != EOF; i++) {
+        if (arr[i]==' ') continue;
+
     }
     return 0;
 
