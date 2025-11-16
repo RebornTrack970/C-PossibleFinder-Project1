@@ -249,6 +249,8 @@ int main(void) {
 
     //give the answer
     solve(list, result, letters, letC, prevData, prevChoices,0);
+    char ch;
+    scanf("%c", &ch); //simply wait.
 
     return 0;
 
