@@ -5,8 +5,19 @@
 struct Node {
     int data;
     struct Node* next;
-    struct Node* prev;
 };
+
+void insert(struct Node** head, int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = (*head);
+    if (*head == NULL) {}
+}
+void read(struct Node** head) {
+    struct Node* temp = *head;
+    printf("%c", temp->data);
+    if (temp->next != NULL) {read(&temp->next);}
+}
 
 int main(void) {
     printf("Would you like to use a file or enter your own expression?\n");
@@ -31,12 +42,14 @@ int main(void) {
     }
     //Finish Reading and Parse.
 
-    Node *mainPtr;
+    struct Node *list;
     int i=0;
     for (; i<strlen(arr) && arr[i] != '\n' && arr[i] != EOF; i++) {
         if (arr[i]==' ') continue;
-
+        insert(&list,arr[i]);
     }
+    read(&list);
+
     return 0;
 
 }
