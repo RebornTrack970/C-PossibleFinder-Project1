@@ -136,9 +136,17 @@ int main(void) {
 
     list = reverse(list); // Had to reverse... it didnt work otherwise...
     //Try Doing all Operations that we can.
+    struct Node *Stack = NULL;
+    struct Node *cur = list;
+    while (cur != NULL) {
+        if (cur->type == OPERAND && cur->next->type == OPERAND && cur->next->next->type == OPERATOR) {
+            cur->data = doCalc(cur->data, cur->next->data, (char)cur->next->next->data);
+        }
+
+        cur = cur->next; //move
+    }
 
 
-    printf("%d",Stack->data);
 
 
     return 0;
