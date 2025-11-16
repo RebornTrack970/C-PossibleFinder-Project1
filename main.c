@@ -33,7 +33,7 @@ int doCalc(int num1, int num2, char op) {
         case '^':
             return pow(num1, num2);
         default:
-            printf("Unkown Operation.");
+            printf("Unknown Operation.");
             return 0;
     }
 }
@@ -98,10 +98,16 @@ int main(void) {
     //Try Doing all Operations that we can.
     struct Node head = *list;
     while (head.next->next != NULL) {
-        if (isDigit(head.data) && isDigit(head.next->data) && isOperator(head.next->next->data)) {
-
+        if (head.type == OPERAND && head.next->type == OPERAND && head.next->next->type == OPERATOR) {
+            head.data = doCalc(head.data, head.next->data, (char)head.next->next->data);
+            struct Node* temp1 = head.next;
+            struct Node* temp2 = head.next->next;
+            head.next = head.next->next->next;
+            free(temp1);
+            free(temp2);
         }
     }
+    read(&list);
 
 
     return 0;
