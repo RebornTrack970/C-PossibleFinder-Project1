@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,7 +6,34 @@
 struct Node {
     int data;
     struct Node* next;
+
 };
+
+int isDigit(char c) {
+    return c >= '0' && c <= '9';
+}
+
+int isOperator(char c) {
+    return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+}
+
+int doCalc(int num1, int num2, char op) {
+    switch (op) {
+        case '+':
+            return num1 + num2;
+        case '-':
+            return num1 - num2;
+        case '*':
+            return num1 * num2;
+        case '/':
+            return num1 / num2;
+        case '^':
+            return pow(num1, num2);
+        default:
+            printf("Unkown Operation.");
+            return 0;
+    }
+}
 
 void insert(struct Node** head, int data) {
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
@@ -41,14 +69,24 @@ int main(void) {
         exit(0);
     }
     //Finish Reading and Parse into Linked List.
+    int result = 0;
     struct Node *list = NULL;
     int i=0;
-    for (; i<strlen(arr) && arr[i] != '\n' && arr[i] != EOF; i++) {
+    for (; i<strlen(arr) && arr[i] != '\n' && arr[i] != EOF && arr[i] != '='; i++) {
         if (arr[i]==' ') continue;
         insert(&list,arr[i]);
     }
+    if (arr[i]=='=') result = arr[i+2] - '0'; // if it isnt equal to 0.
     //read(&list);
-    
+
+    //Try Doing all Operations that we can.
+    struct Node head = *list;
+    while (head.next.next != NULL) {
+        if (isDigit(head.data) && isDigit(head.next->data) && isOperator(head.next->next->data)) {
+
+        }
+    }
+
 
     return 0;
 
