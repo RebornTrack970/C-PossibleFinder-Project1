@@ -31,7 +31,7 @@ int doCalc(int num1, int num2, char op) {
         case '/':
             return num1 / num2;
         case '^':
-            return pow(num1, num2);
+            return (int)pow(num1, num2);
         default:
             printf("Unknown Operation.");
             return 0;
@@ -90,19 +90,20 @@ int main(void) {
             num = num * 10 + (arr[i] - '0');
             i++;
         }
+        i--;
         insert(&list,num,OPERAND);
     }
     if (arr[i]=='=') result = arr[i+2] - '0'; // if it isnt equal to 0.
     read(&list);
 
     //Try Doing all Operations that we can.
-    struct Node head = *list;
-    while (head.next->next != NULL) {
-        if (head.type == OPERAND && head.next->type == OPERAND && head.next->next->type == OPERATOR) {
-            head.data = doCalc(head.data, head.next->data, (char)head.next->next->data);
-            struct Node* temp1 = head.next;
-            struct Node* temp2 = head.next->next;
-            head.next = head.next->next->next;
+    struct Node *head = list;
+    while (head->next->next != NULL) {
+        if (head->type == OPERAND && head->next->type == OPERAND && head->next->next->type == OPERATOR) {
+            head->data = doCalc(head->data, head->next->data, (char)head->next->next->data);
+            struct Node* temp1 = head->next;
+            struct Node* temp2 = head->next->next;
+            head->next = head->next->next->next;
             free(temp1);
             free(temp2);
         }
