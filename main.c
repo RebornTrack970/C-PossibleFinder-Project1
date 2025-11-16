@@ -65,31 +65,31 @@ struct Node* reverse(struct Node* head) {
     return prev;
 }
 
-int testAnswer(struct Node* list, char letters[], char tryops[], int letterC) {
-    struct Node *Stack = NULL;
-    struct Node *cur = list;
-    while (cur != NULL) {
-        if (cur->type == OPERAND) {
-            insert(&Stack, cur->data, OPERAND); //add to stack if number (learned from the ppt for trees XD)
-        }else if (cur->type == OPERATOR) {
-            //pop 2
-            int num2 = Stack->data;
-            struct Node* t1 = Stack;
-            Stack = Stack->next;
-            free(t1);
-            //pop 1
-            int num1 = Stack->data;
-            struct Node* t2 = Stack;
-            Stack = Stack->next;
-            free(t2);
-            //Now do magic calc
-            insert(&Stack, doCalc(num1, num2, (char)cur->data), OPERAND);
-        }else { //For unknown, uh, idk for now.
+struct Node* simplfy(struct Node* head) {
+    while (1) {
+        int pass = 0;
+        struct Node* cur = head;
+        struct Node* prev = NULL;
 
+        while (cur != NULL && cur->next != NULL && cur->next->next != NULL) {
+            if (cur->type == OPERAND && cur->next->type == OPERAND && cur->next->next->type == OPERATOR) {
+                cur->data = doCalc(cur->data, cur->next->data, (char)cur->next->next->data);
+
+                struct Node* t2 = cur->next;
+                struct Node* t1 = cur->next->next;
+                cur->next = t1->next;
+
+                free(t2);
+                free(t1);
+                pass = 1;
+                break;
+            }
+            prev = cur;
+            cur = cur->next;
         }
-        cur = cur->next; //move
+        if (pass == 0) break;
     }
-    return Stack->data;
+    return head;
 }
 
 int main(void) {
@@ -138,13 +138,8 @@ int main(void) {
     //Try Doing all Operations that we can.
     struct Node *Stack = NULL;
     struct Node *cur = list;
-    while (cur != NULL) {
-        if (cur->type == OPERAND && cur->next->type == OPERAND && cur->next->next->type == OPERATOR) {
-            cur->data = doCalc(cur->data, cur->next->data, (char)cur->next->next->data);
-        }
-
-        cur = cur->next; //move
-    }
+    list = simplfy(list); //simplfy func
+    read(&list);
 
 
 
